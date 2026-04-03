@@ -1,3 +1,48 @@
+### 🧱 BAGIAN 1: Hierarki Teknologi (Tech Stack & Lokasinya)
+
+Sobat, sebelum gua jelasin webnya buat apa, gua mau bedah dulu 'mesin' di balik aplikasi ini. Biar kebayang, ini urutan tingkatan teknologinya dari yang paling dasar sampai ke *cloud*:
+
+**1. Fondasi Bawah (Infrastruktur Lokal/Server)**
+* **OS (Operating System):** Windows/Linux lu, tempat di mana semua *code* ini numpang jalan secara fisik.
+* **Node.js:** Ini mesin *runtime* di atas OS. Logikanya, tanpa Node.js, bahasa JavaScript cuma bisa hidup di dalam *browser*. Node.js bikin JS bisa jalan di komputer/server kita.
+
+**2. Kerangka Utama (Logic & Framework)**
+* **TypeScript:** Bahasa pemrogramannya. Jalan di dalam Node.js. Ini JavaScript tapi versi "disiplin" yang punya aturan tipe data ketat biar nggak gampang *error*.
+* **React:** *Library* utama untuk bikin tampilan *web* (UI). Logikanya jalan di memori untuk merender komponen.
+* **Next.js:** Ini *Framework Full-Stack* yang membungkus React. Next.js ini bosnya! Dia yang ngatur *routing* (pindah halaman), *Server-Side Rendering*, dan punya *backend* sendiri (API Routes). Berkat Next.js, kita nggak perlu pisahin *folder frontend* dan *backend*.
+
+**3. Lapisan Depan (UI / Tampilan di Browser)**
+* **UI & shadcn:** Untuk *user interface*, gua pakai komponen dari **shadcn/ui** (digabung sama Tailwind CSS). Logikanya, ini adalah balok-balok Lego (tombol, *form*, tabel) yang langsung dirender dan dilihat oleh mata *user* di layar HP/Laptop mereka.
+
+**4. Mesin Fitur (Berjalan di Server Next.js / Backend)**
+* **Auth (NextAuth.js):** Satpam aplikasi kita. Logikanya hidup di *middleware* server. Dia yang nyocokin *password* dan ngasih "Kunci Akses" (*session cookie*) ke *browser user* biar aman.
+* **Document Engine (@react-pdf):** Mesin pembuat PDF. Jalan murni di *server* (di belakang layar) supaya nggak bikin *browser client* jadi *ngelag* pas lagi *generate* dokumen Surat Jalan.
+
+**5. Lapisan Data & Cloud (Database & External Storage)**
+* **PostgreSQL:** Ini rumah datanya (*database* relasional). Secara fisik, dia nggak ada di laptop gua lagi, tapi udah numpang di *server cloud* **Neon Database**.
+* **Drizzle ORM:** Ini "Penerjemah". Logikanya ada di dalam *server* Next.js. Drizzle yang nerjemahin bahasa TypeScript gua menjadi bahasa SQL untuk ngobrol sama PostgreSQL.
+* **Storage (Cloudinary):** Ini gudang file eksternal. Kalau *user* *upload* foto truk, fotonya nggak menuhin *database* Postgres atau *server* Vercel, tapi langsung dilempar ke *cloud storage* **Cloudinary**. Sistem gua cuma nyimpen *link* URL-nya aja.
+
+---
+
+### 🚀 BAGIAN 2: Projek Apa Ini? (Fokus Bisnis & Solusi)
+
+Nah, dengan semua mesin canggih tadi, apa sih yang gua bangun? 
+
+**[Intinya]**
+Singkatnya, gua baru aja *deploy* **Sistem ERP Produksi untuk bengkel Karoseri Truk (PT. Alfa Mega Engineering)**. Gua ngerubah cara mereka kerja dari yang tadinya manual pakai buku besar dan grup WhatsApp, jadi sistem **Kanban Board digital** yang bisa dipantau langsung dari HP.
+
+**[Masalah & Solusinya]**
+Masalah utama bengkel ini dulu: kalau ada sasis truk masuk, pencatatannya sering hilang. Dokumen Surat Perintah Kerja (SPK) sama Surat Jalan sering nggak sinkron sama fisik truk di lapangan.
+Solusinya, sistem yang gua bangun ini mengikat semuanya. Dari truk masuk bengkel, naik ke tahap produksi, sampai selesai, semuanya digeser lewat sistem kartu (Kanban). Sistem ini juga punya **Document Engine** yang otomatis nyetak PDF untuk SPK dan Surat Jalan, plus **Cloud Storage** buat nyimpen foto kondisi truk pas pertama datang. 
+
+**[Metodologinya]**
+Yang bikin projek ini spesial, gua nggak ngoding ngasal atau pakai metode *Waterfall* kuno yang bikin dokumen tebal di awal terus ditinggal. Gua pakai **SDLC Spiral**. 
+
+Setiap fitur dikerjakan dalam putaran iterasi pendek. Sebelum satu baris kode ditulis, tim gua harus menganalisis **risiko teknis dan bisnis** dulu. Terus, gua pakai konsep **Living Documents** (*PRD, ERD, Risk Log*). Jadi, dokumen perancangan sistemnya itu hidup dan terus berevolusi barengan sama kodingannya. Makanya pas kemarin di-*deploy* ke Vercel, aplikasinya langsung jalan mulus tanpa hambatan besar karena risikonya udah dimitigasi sejak awal!
+
+
+
 # 🎭 Naskah Role-Play: "Membangun Karoseri AME dengan SDLC Spiral"
 
 **[INTRO]**
