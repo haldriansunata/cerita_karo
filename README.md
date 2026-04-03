@@ -13,9 +13,9 @@ Semuanya bermula dari keluhan Business Owner bengkel tersebut. Beliau bilang: *"
 
 **Project Manager (Kuadran 1 - Planning):** "Di Iterasi 0, tujuannya menyiapkan fondasi. Sebagai PM, saya mendefinisikan *scope* awal dan membuat dokumen hidup pertama kita: `01_PRD.md`. Kami sepakat pakai Next.js 16, Drizzle ORM, dan PostgreSQL."
 
-**Risk Analyst (Kuadran 2 - Risk Analysis):** "Tunggu dulu. Sebelum koding dimulai, saya harus menganalisis risiko teknisnya. Framework Next.js 16 itu masih sangat baru, dan NextAuth v5 masih berstatus *beta*. Secara teknis, ini bahaya kalau ada API yang tiba-tiba berubah dan bikin *error* di tengah jalan. Saya catat ini di `03_Spiral_Risk_Log.md`. Mitigasinya: kita hanya akan pakai fitur *core* (seperti JWT) dan menghindari eksperimen fitur *beta*."
+**Risk Analyst (Kuadran 2 - Risk Analysis):** "Tunggu dulu. Sebelum koding dimulai, saya harus menganalisis risikonya. Dari segi *user*, orang bengkel itu kerjanya pakai sarung tangan, kadang layar HP kotor. Kalau UI-nya ribet, mereka pasti malas pakai sistem ini. Dari segi teknis, Next.js 16 dan NextAuth v5 itu masih sangat baru dan rawan *bug*. Saya catat ini di `03_Spiral_Risk_Log.md`. Mitigasinya: UI harus berukuran besar dan gampang di-klik, dan kita hanya akan pakai fungsi dasar dari *framework* agar tidak *error*."
 
-**System Architect (Kuadran 3 - Engineering/Design):** "Karena risiko teknis sudah dimitigasi, saya mulai menggambar kerangka sistem. Saya menyusun diagram arsitektur klien-server dan draf awal tabel *database* di `02_ERD_Architecture.md`."
+**System Architect (Kuadran 3 - Engineering/Design):** "Karena risiko sudah dimitigasi, saya mulai menggambar kerangka sistem. Saya menyusun diagram arsitektur klien-server dan draf awal tabel *database* di `02_ERD_Architecture.md`."
 
 **Lead Engineer (Kuadran 3 - Engineering/Code):** "Gua yang eksekusi kerangka itu. Bikin *project* Next.js dan *setup* Tailwind selesai. Tapi praktiknya nggak semudah teori. Pas gua mau dorong kodingan ke GitHub pakai `git push`, terminal langsung teriak *Authentication Failed*! Ternyata GitHub udah nggak bisa pakai *password* biasa. Gua harus bolak-balik bikin *Personal Access Token* (PAT) dan benerin URL *remote* di terminal. Baru deh kodingan awal kita selamat!"
 
@@ -27,13 +27,13 @@ Semuanya bermula dari keluhan Business Owner bengkel tersebut. Beliau bilang: *"
 
 **Project Manager (Kuadran 1 - Planning):** "Iterasi 1 dimulai. Target di PRD saya perbarui: Admin harus bisa Login, input data sasis truk, dan datanya harus muncul di Kanban Board secara visual."
 
-**Risk Analyst (Kuadran 2 - Risk Analysis):** "Dari segi teknis, integrasi NextAuth v5 di *Edge Runtime* bentrok dengan *database* Postgres. Ini *technical risk* tingkat tinggi (R1-2). Selain itu, bikin *library* drag-and-drop untuk Kanban terlalu berat untuk MVP. Mitigasinya: pisahkan file *config* auth, dan tunda drag-and-drop, ganti pakai *dropdown* statis saja untuk pindah status."
+**Risk Analyst (Kuadran 2 - Risk Analysis):** "Ada risiko operasional besar di sini. Kalau kita pakai fitur Kanban *drag-and-drop* di layar HP, rawan banget kepencet sama staf bengkel, tahu-tahu status sasis pindah sendiri! Selain itu, secara teknis integrasi *database* di sistem *Edge Runtime* itu rentan bentrok. Mitigasinya: Kita buang rencana *drag-and-drop*, ganti dengan *dropdown* klik biasa agar *user* tidak salah input. Untuk teknis, kita pisahkan *file config auth*."
 
 **System Architect (Kuadran 3 - Engineering/Design):** "Sesuai mitigasi, saya finalisasi skema Drizzle di ERD untuk tabel `users` dan `antrian`."
 
-**Lead Engineer (Kuadran 3 - Engineering/Code):** "Gua langsung sikat kodingannya. Kredensial aman pakai *hashing* bcrypt. Form input sasis sukses nyimpen data ke Postgres, dan kartu antriannya muncul di Kanban Board."
+**Lead Engineer (Kuadran 3 - Engineering/Code):** "Gua langsung sikat kodingannya. Kredensial aman pakai *hashing* bcrypt. Form input sasis sukses nyimpen data ke Postgres, dan kartu antriannya muncul di Kanban Board dengan tombol *dropdown* yang aman."
 
-**Project Manager (Kuadran 4 - Evaluation):** "Kita uji coba. Sasis berhasil masuk sistem, Kanban berjalan lancar. MVP Inti selesai!"
+**Project Manager (Kuadran 4 - Evaluation):** "Kita uji coba. Sasis berhasil masuk sistem, Kanban berjalan lancar tanpa takut salah geser. MVP Inti selesai!"
 
 ---
 
@@ -41,13 +41,13 @@ Semuanya bermula dari keluhan Business Owner bengkel tersebut. Beliau bilang: *"
 
 **Project Manager (Kuadran 1 - Planning):** "Business Owner puas, tapi menuntut fitur baru: *Sistem harus bisa mencetak SPK dan Tanda Terima dalam bentuk PDF.* PRD kembali saya *update*."
 
-**Risk Analyst (Kuadran 2 - Risk Analysis):** "Saya deteksi risiko performa (R2-1). Me-render PDF langsung di komponen *frontend* Next.js App Router itu sangat berat dan rentan bikin *browser crash*. Mitigasi teknisnya: Kita proses PDF-nya menggunakan `@react-pdf/renderer` murni di API Routes *backend*, biar *server* yang kerja keras, bukan laptop *user*."
+**Risk Analyst (Kuadran 2 - Risk Analysis):** "Ada risiko dari segi bisnis (R2-2). Kalau format PDF SPK yang kita *generate* beda jauh dari kertas yang biasa dibaca tukang las, mereka bisa salah potong sasis truk! Risiko teknisnya: me-render PDF di sisi klien itu sangat berat dan bikin *browser crash*. Mitigasinya: Kita pastikan *field* SPK dikonfirmasi langsung ke klien, dan kita lempar proses pembuatan PDF-nya ke *server* *backend*."
 
 **System Architect (Kuadran 3 - Engineering/Design):** "Saya tambahkan relasi *one-to-one* di ERD. Satu antrian sasis, punya satu tabel `spk`, dan satu tabel `tanda_terima`."
 
-**Lead Engineer (Kuadran 3 - Engineering/Code):** "Kodingan *generate* PDF sukses! Tapi ada drama lagi pas narik data Drizzle. Tanggal yang keluar formatnya berantakan kayak `2026-04-02T...`. Gua terpaksa bikin *utility function* `formatTanggal` biar PDF-nya rapi dan enak dibaca."
+**Lead Engineer (Kuadran 3 - Engineering/Code):** "Kodingan *generate* PDF sukses! Tapi ada drama lagi pas narik data. Tanggal dari *database* keluar dengan format aneh kayak `2026-04-02T...`. Klien pasti bingung bacanya. Gua terpaksa bikin *utility function* `formatTanggal` biar PDF-nya rapi."
 
-**Project Manager (Kuadran 4 - Evaluation):** "Dokumen PDF bisa diunduh. Kita resmi mencapai *Milestone* LCA (*Life Cycle Architecture*)."
+**Project Manager (Kuadran 4 - Evaluation):** "Dokumen PDF bisa diunduh dan formatnya sesuai kebutuhan lapangan. Kita resmi mencapai *Milestone* LCA (*Life Cycle Architecture*)."
 
 ---
 
@@ -55,14 +55,14 @@ Semuanya bermula dari keluhan Business Owner bengkel tersebut. Beliau bilang: *"
 
 **Project Manager (Kuadran 1 - Planning):** "Putaran terakhir! Target fitur: Surat Jalan, Upload Foto Bukti Sasis, dan *Deployment* agar sistem ini *online*."
 
-**Risk Analyst (Kuadran 2 - Risk Analysis):** "Risiko teknis terbesar di proyek ini ada di proses *upload* foto (R3-1). Kalau foto dilempar ke *database* atau *server* Next.js kita, *bandwidth* akan habis dan *server timeout*. Mitigasi mutlak: Kita pakai Cloudinary dengan mode *Unsigned Upload*. Foto dikirim langsung dari *browser* ke Cloudinary, *server* kita hanya menyimpan *link* URL-nya saja."
+**Risk Analyst (Kuadran 2 - Risk Analysis):** "Risiko *User Error* paling fatal ada di sini (US-3.0). Gimana kalau Kepala Produksi iseng atau nggak sengaja klik tombol 'Selesai' padahal truk belum beres? Mitigasinya: Harus ada pembatasan Hak Akses. Kepala Produksi cuma boleh *update* sampai tahap 'Finishing'. Yang berhak menyatakan 'Selesai' dan bikin Surat Jalan cuma Admin."
 
-**System Architect (Kuadran 3 - Engineering/Design):** "Setuju. Dan karena kita mau *deploy* ke lingkungan Serverless (Vercel), driver *database* lokal `pg` harus saya rombak menjadi `@neondatabase/serverless` agar koneksi tidak terputus-putus."
+**System Architect (Kuadran 3 - Engineering/Design):** "Sistem hak akses itu saya atur logika transisinya. Dan untuk urusan teknis, karena kita mau *deploy* ke Vercel, driver *database* lokal harus saya rombak menjadi `@neondatabase/serverless` agar server tidak mati mendadak."
 
-**Lead Engineer (Kuadran 3 - Engineering/Code):** "Ini *boss battle* kita. Pas kodingan udah jalan dan mau dorong skema ke Neon DB pakai script *seed*, terminal teriak *"No database connection string"*. Ternyata Node.js nggak baca file `.env.local` otomatis. Gua harus akalin pakai *flag* khusus `--env-file` di terminal. Setelah itu sukses, gua pindahin 4 kunci rahasia termasuk `AUTH_SECRET` ke *dashboard* Vercel, klik Deploy, tunggu *confetti* turun, dan BOOM! Web kita *live*!"
+**Lead Engineer (Kuadran 3 - Engineering/Code):** "Ini *boss battle* kita. Gua pasang batas akses *role*-nya. Buat *upload* foto, gua pakai Cloudinary biar gampang. Terus pas mau *deploy* ke Neon DB, terminal teriak *"No database connection string"*. Ternyata Node.js nggak baca file `.env.local` otomatis. Gua harus akalin pakai *flag* khusus `--env-file` di terminal. Setelah sukses, gua masukin kunci rahasia `AUTH_SECRET` ke Vercel, klik Deploy, dan BOOM! Web kita *live*!"
 
-**Project Manager (Kuadran 4 - Evaluation & Penutup):** "Aplikasi Karoseri Famega resmi beroperasi. Business Owner sekarang bisa memantau sasis masuk dan keluar langsung dari HP. Kami mencapai *Milestone* akhir: IOC (*Initial Operational Capability*).
+**Project Manager (Kuadran 4 - Evaluation & Penutup):** "Aplikasi Karoseri Famega resmi beroperasi. Business Owner sekarang bisa memantau sasis masuk dan keluar langsung dari HP, dan mekanik tidak lagi dipusingkan dengan kertas yang hilang. Kami mencapai *Milestone* akhir: IOC (*Initial Operational Capability*).
 
-Inilah inti dari SDLC Spiral. Dokumen kami (`PRD`, `ERD`, `Risk Log`) bukan sekadar pajangan awal. Mereka adalah 'Dokumen Hidup' yang terus berubah bersamaan dengan kodingan, di mana setiap kode yang ditulis selalu didahului oleh mitigasi risiko teknis. Terima kasih!"
+Inilah inti dari SDLC Spiral. Dokumen kami (`PRD`, `ERD`, `Risk Log`) bukan sekadar pajangan awal. Mereka adalah 'Dokumen Hidup' yang terus berubah bersamaan dengan kodingan, di mana setiap fitur selalu diuji kelayakannya dari sisi teknis maupun dari sisi *user*. Terima kasih!"
 
 **[OUTRO / SELESAI]**
